@@ -26,6 +26,7 @@ export class Player {
   public version = '';
   public id = 0;
   public CARD_MAPPING = { '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14 };
+  public MAX_BET= 1000;
 
   public betRequest(gameState: GameState, betCallback: (bet: number) => void): void {
     const {community_cards, players} = gameState;
@@ -62,13 +63,10 @@ export class Player {
       });
     }
 
-    if (this.checkFullHouse(cardsInGame) || this.checkFourOfAKind(cardsInGame)) {
-      bet = Math.round(highestBet * 2);
-
-      if (this.checkFourOfAKind(cardsInGame)) {
-        bet = Math.round(highestBet * 2);
-      }
+    if (this.checkFullHouse(cardsInGame) || this.checkFourOfAKind(cardsInGame) || this.checkFlush(cardsInGame)) {
+      bet = this.MAX_BET;
     }
+
     betCallback(bet > 1000 ? 1000 : bet);
   }
 
@@ -148,7 +146,7 @@ export class Player {
         });
       }
     });
-    return true;
+    return result;
   }
 };
 
