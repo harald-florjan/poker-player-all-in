@@ -55,6 +55,10 @@ export class Player {
         bet = highestBet;
       }
 
+      if (highestBet > 200) {
+        bet = 0;
+      }
+
       if (['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) && ['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
         console.log('===== high cards AND =====', highestBet);
         bet = Math.round(highestBet * 1.5);
