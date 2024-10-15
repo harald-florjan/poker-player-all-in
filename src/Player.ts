@@ -68,11 +68,11 @@ export class Player {
         bet = this.MAX_BET + this.getMinimumRaise(gameState);
         console.log('===== inside check train: bet =====', bet);
       }
-
-      if (highestBet > 200) {
-        bet = 0;
-      }
     }
+
+    // if (highestBet > 200) {
+    //   bet = 0;
+    // }
 
 
     console.log('====== betCallback(bet) bet: ======', bet);
