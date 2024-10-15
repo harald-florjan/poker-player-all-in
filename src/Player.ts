@@ -25,7 +25,7 @@ export class Player {
   public hole_cards: Card[] = [];
   public version = '';
   public id = 0;
-  public CARD_MAPPING = { '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14 };
+  public CARD_MAPPING: Record<string, number> = { '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14 };
   public MAX_BET= 1000;
 
   public betRequest(gameState: GameState, betCallback: (bet: number) => void): void {
@@ -63,7 +63,7 @@ export class Player {
       });
     }
 
-    if (this.checkFullHouse(cardsInGame) || this.checkFourOfAKind(cardsInGame) || this.checkFlush(cardsInGame)) {
+    if (this.checkStraight(cardsInGame) || this.checkFullHouse(cardsInGame) || this.checkFourOfAKind(cardsInGame) || this.checkFlush(cardsInGame)) {
       bet = this.MAX_BET;
     }
 
@@ -110,11 +110,6 @@ export class Player {
     return result;
   }
 
-  private checkStraight(cardsInGame: Card[]): any {
-    let result = false;
-    let straightSet = [];
-  }
-
   private checkFourOfAKind(cardsInGame: Card[]): boolean {
     let result = false;
     cardsInGame.forEach(card => {
@@ -144,6 +139,24 @@ export class Player {
             return;
           }
         });
+      }
+    });
+    return result;
+  }
+
+  private checkStraight(cardsInGame: Card[]): boolean {
+    let result = true;
+
+    const sortedCards = cardsInGame.sort((a, b) => this.CARD_MAPPING[a.rank] - this.CARD_MAPPING[b.rank]);
+
+    let lastCard: Card | null = null;
+    sortedCards.forEach(card => {
+      if (!lastCard) {
+        lastCard = card;
+        return;
+      }
+      if (this.CARD_MAPPING[card.rank] - this.CARD_MAPPING[lastCard.rank] !== 1) {
+        result = false;
       }
     });
     return result;
