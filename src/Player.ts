@@ -123,7 +123,7 @@ export class Player {
     return result;
   }
 
-  private checkFourOfAKind(cardsInGame: Card[]): boolean {
+  public checkFourOfAKind(cardsInGame: Card[]): boolean {
     let result = false;
     cardsInGame.forEach(card => {
       const count = cardsInGame.filter(c => c.rank === card.rank).length;
