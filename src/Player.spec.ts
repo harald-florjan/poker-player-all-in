@@ -94,4 +94,36 @@ describe('Player', () => {
             expect(result).toBeFalsy();
         });
     });
+
+    describe('checkFullHouse', () => {
+        beforeEach(() => {
+            cardsInGame = [{
+                rank: '5',
+                suit: 'hearts'
+            }, {
+                rank: '5',
+                suit: 'clubs'
+            }, {
+                rank: '5',
+                suit: 'spades'
+            }, {
+                rank: 'K',
+                suit: 'diamonds'
+            },{
+                rank: 'K',
+                suit: 'hearts'
+            }];
+        });
+
+        it('should return true', () => {
+            const result = player.checkFullHouse(cardsInGame);
+            expect(result).toBeTruthy();
+        });
+
+        it('should return false', () => {
+            cardsInGame[0].rank = '4';
+            const result = player.checkFullHouse(cardsInGame);
+            expect(result).toBeFalsy();
+        });
+    });
 });

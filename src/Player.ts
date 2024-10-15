@@ -135,7 +135,7 @@ export class Player {
     return result;
   }
 
-  private checkFullHouse(cardsInGame: Card[]): boolean {
+  public checkFullHouse(cardsInGame: Card[]): boolean {
     let result = false;
 
     cardsInGame.forEach(card => {
