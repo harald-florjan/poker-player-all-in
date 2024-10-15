@@ -16,12 +16,13 @@ export interface Card {
   rank: string;
   suit: string;
 }
+
 export class Player {
   public name = '';
   public stack = 0;
   public status = '';
   public bet = 0;
-  public hole_cards = [];
+  public hole_cards: Card[] = [];
   public version = '';
   public id = 0;
 
@@ -33,9 +34,13 @@ export class Player {
 
     if (hand.hole_cards[0].rank === hand.hole_cards[1].rank) {
       bet = highestBet * 1,1;
-    } else {
-      bet = 0;
     }
+
+    hand.hole_cards.forEach(card => {
+      if (this.cardExistsInCommunity(card, community_cards)) {
+        bet = highestBet * 1,1;
+      }
+    });
 
     betCallback(bet);
   }
@@ -56,6 +61,10 @@ export class Player {
       }
       return highestBet;
     } , 0);
+  }
+
+  private cardExistsInCommunity(handCard: Card, community_cards: Card[]): boolean {
+    return community_cards.some(communityCard => communityCard.rank === handCard.rank);
   }
 };
 
