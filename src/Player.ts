@@ -114,7 +114,7 @@ export class Player {
   }
 
   // TODO: check logic should check for suits of 5 colors
-  private checkFlush(cardsInGame: Card[]): boolean {
+  public checkFlush(cardsInGame: Card[]): boolean {
     let result = false;
     cardsInGame.forEach(card => {
       const flush = cardsInGame.filter(c => c.suit === card.suit);
