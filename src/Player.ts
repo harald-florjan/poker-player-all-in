@@ -31,7 +31,10 @@ export class Player {
     const { community_cards, players } = gameState;
     let bet = 0;
     const hand = this.findMyPlayer(gameState);
-    const highestBet = this.getHighestBet(gameState);
+    let highestBet = this.getHighestBet(gameState);
+    if (highestBet == 0) {
+      highestBet = 200;
+    }
 
     const cardsInGame = hand.hole_cards.concat(community_cards);
 
@@ -54,7 +57,7 @@ export class Player {
   }
 
   private findMyPlayer(gameState: GameState): any {
-    
+
     return gameState.players.find(player => player.name === 'All in');
   }
 
