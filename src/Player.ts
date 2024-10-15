@@ -102,9 +102,14 @@ export class Player {
     return 0;
   }
 
-  private checkFlush(cardsInGame: Card[]): any {
+  // TODO: check logic should check for suits of 5 colors
+  private checkFlush(cardsInGame: Card[]): boolean {
     let result = false;
-    let flushSet = [];
+    cardsInGame.forEach(card => {
+      const flush = cardsInGame.filter(c => c.suit === card.suit);
+      result = flush.length >= 5;
+    });
+    return result;
   }
 
   private checkStraight(cardsInGame: Card[]): any {
