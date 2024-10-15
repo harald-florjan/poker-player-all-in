@@ -36,16 +36,18 @@ export class Player {
     const hand = this.findMyPlayer(gameState);
     const highestBet = this.getHighestBet(gameState);
 
+    const cardsInGame = hand.hole_cards.concat(community_cards);
+
     if (hand.hole_cards[0].rank === hand.hole_cards[1].rank) {
-      bet = highestBet * 1.1;
+      bet = highestBet * 2;
     }
 
     hand.hole_cards.forEach((card: Card) => {
       if (this.cardExistsInCommunity(card, community_cards)) {
-        bet = highestBet * 1.1;
+        bet = highestBet * 2;
       }
     });
-    
+
 
     betCallback(bet);
   }
@@ -71,6 +73,10 @@ export class Player {
   private cardExistsInCommunity(handCard: Card, community_cards: Card[]): boolean {
     return community_cards.some(communityCard => communityCard.rank === handCard.rank);
   }
+
+  // private checkHighestCard(gameState: GameState, hand: Card[]): number {
+
+  // }
 };
 
 export default Player;
