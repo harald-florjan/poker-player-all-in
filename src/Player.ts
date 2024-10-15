@@ -54,7 +54,7 @@ export class Player {
       });
     }
 
-    if (this.checkFourOfAKind(cardsInGame)) {
+    if (this.checkFullHouse(cardsInGame) || this.checkDoubles(cardsInGame)) {
       bet = highestBet * 2;
     }
 
@@ -101,6 +101,29 @@ export class Player {
       }
     });
     return result;
+  }
+
+  private checkFullHouse(cardsInGame: Card[]): boolean {
+    let result = false;
+
+    cardsInGame.forEach(card => {
+      const threeOfAKind = cardsInGame.filter(c => c.rank === card.rank);
+
+      if ( threeOfAKind.length === 3) {
+        cardsInGame.forEach(card2 => {
+          if (card2.rank === card.rank) {
+            return;
+          }
+
+          const count2 = cardsInGame.filter(c => c.rank === card2.rank).length;
+          if (count2 === 2) {
+            result = true;
+            return;
+          }
+        });
+      }
+    });
+    return true;
   }
 };
 
