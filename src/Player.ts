@@ -54,7 +54,7 @@ export class Player {
       bet = highestBet * 2;
     }
 
-    betCallback(bet);
+    betCallback(bet > 1000 ? 1000 : bet);
   }
 
   public showdown(gameState: any): void {
