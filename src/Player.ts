@@ -33,12 +33,12 @@ export class Player {
     const highestBet = this.getHighestBet(gameState);
 
     if (hand.hole_cards[0].rank === hand.hole_cards[1].rank) {
-      bet = highestBet * 1,1;
+      bet = highestBet * 1.1;
     }
 
     hand.hole_cards.forEach(card => {
       if (this.cardExistsInCommunity(card, community_cards)) {
-        bet = highestBet * 1,1;
+        bet = highestBet * 1.1;
       }
     });
 
