@@ -36,7 +36,7 @@ export class Player {
       bet = highestBet * 1.1;
     }
 
-    hand.hole_cards.forEach(card => {
+    hand.hole_cards.forEach((card: Card) => {
       if (this.cardExistsInCommunity(card, community_cards)) {
         bet = highestBet * 1.1;
       }
