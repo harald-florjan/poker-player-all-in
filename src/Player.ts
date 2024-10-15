@@ -50,6 +50,10 @@ export class Player {
         bet = Math.round(highestBet * 1.2);
       }
 
+      if (this.hasPairInHoleCardsCommunityCards(gameState)) {
+        bet = Math.round(highestBet * 1.5);
+      }
+
       if (['J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) || ['J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
         console.log('===== high cards OR =====', highestBet);
         bet = highestBet;
@@ -63,6 +67,11 @@ export class Player {
         console.log('===== high cards AND =====', highestBet);
         bet = Math.round(highestBet * 1.5);
       }
+
+      if (this.checkThreeOfAKind(cardsInGame)) {
+        bet = this.MAX_BET + this.getMinimumRaise(gameState);
+      }
+
     } else {
       hand.hole_cards.forEach((card: Card) => {
         if (this.cardExistsInCommunity(card, community_cards)) {
@@ -74,16 +83,26 @@ export class Player {
 
     console.log('is this.checkStraight(cardsInGame)', this.checkStraight(cardsInGame));
 
-    if (this.checkFullHouse(cardsInGame) || this.checkFourOfAKind(cardsInGame) || this.checkFlush(cardsInGame)) {
+    if (this.checkFullHouse(cardsInGame) || this.checkThreeOfAKind(cardsInGame) || this.checkFourOfAKind(cardsInGame) || this.checkFlush(cardsInGame)) {
       bet = this.MAX_BET + this.getMinimumRaise(gameState);
       console.log('===== inside check train: bet =====', bet);
     }
 
-    betCallback(bet > 1000 ? 1000 : bet);
+    betCallback(bet);
   }
 
   public showdown(gameState: any): void {
     //
+  }
+
+  private hasPairInHoleCardsCommunityCards(gameState: GameState): boolean {
+    let flag = false;
+    this.findMyPlayer(gameState).hole_cards.forEach((card: Card) => {
+      if (this.cardExistsInCommunity(card, gameState.community_cards)) {
+        flag = true;
+      }
+    });
+    return flag;
   }
 
   private findMyPlayer(gameState: GameState): any {
@@ -91,7 +110,7 @@ export class Player {
     return gameState.players.find(player => player.name === 'All in');
   }
 
-  private getHighestBet(gameState: GameState): number {
+  public getHighestBet(gameState: GameState): number {
     return gameState.players.reduce((highestBet, player) => {
       if (player.bet > highestBet) {
         return player.bet;
@@ -105,21 +124,24 @@ export class Player {
     return community_cards.some(communityCard => communityCard.rank === handCard.rank);
   }
 
-  private checkDoubles(cardsInGame: Card[]): boolean {
-    return true;
-  }
-
-  private checkHighestCard(gameState: GameState, hand: Card[]): number {
-    return 0;
-  }
-
-  // TODO: check logic should check for suits of 5 colors
   public checkFlush(cardsInGame: Card[]): boolean {
     let result = false;
     cardsInGame.forEach(card => {
       const flush = cardsInGame.filter(c => c.suit === card.suit);
       result = flush.length >= 5;
     });
+    return result;
+  }
+
+  public checkThreeOfAKind(cardsInGame: Card[]): boolean {
+    let result = false;
+    cardsInGame.forEach(card => {
+      const count = cardsInGame.filter(c => c.rank === card.rank).length;
+      if (count === 3) {
+        result = true;
+      }
+    });
+    console.log('===== checkThreeOfAKind =====', result);
     return result;
   }
 
