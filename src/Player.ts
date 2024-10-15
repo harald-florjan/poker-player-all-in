@@ -58,7 +58,6 @@ export class Player {
       bet = highestBet * 2;
     }
 
-    console.log("---> BET" + bet);
     betCallback(bet > 1000 ? 1000 : bet);
   }
 
