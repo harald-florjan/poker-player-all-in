@@ -41,52 +41,39 @@ export class Player {
 
     const cardsInGame = hand.hole_cards.concat(community_cards);
 
-    if (gameState.round === 0 || gameState.round === 1) {
+    if (gameState.round === 0) {
+      // removed suite from check  || hand.hole_cards[0].suit === hand.hole_cards[1].suit
       if (hand.hole_cards[0].rank === hand.hole_cards[1].rank) {
-        bet = highestBet * 1.5;
-      }
-
-      if (hand.hole_cards[0].suit === hand.hole_cards[1].suit) {
         bet = highestBet * 1.2;
-      }
-
-      if (this.hasPairInHoleCardsCommunityCards(gameState)) {
-        bet = highestBet * 1.5;
-      }
-
-      if (['J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) || ['J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
-        console.log('===== high cards OR =====', highestBet);
+      } else if (['J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) || ['J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
         bet = highestBet;
-      }
-
-      if (highestBet > 200) {
-        bet = 0;
-      }
-
-      if (['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) && ['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
+      } else if (['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) && ['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
         console.log('===== high cards AND =====', highestBet);
         bet = highestBet * 1.5;
+      }
+    } else {
+      if (gameState.round === 1) {
+
+        if (this.hasPairInHoleCardsCommunityCards(gameState)) {
+          bet = highestBet * 1.5;
+        }
       }
 
       if (this.checkThreeOfAKind(cardsInGame)) {
         bet = 200 + this.getMinimumRaise(gameState);
       }
 
-    } else {
-      hand.hole_cards.forEach((card: Card) => {
-        if (this.cardExistsInCommunity(card, community_cards)) {
-          console.log('===== cardExistsInCommunity: bet: =====', highestBet);
-          bet = highestBet;
-        }
-      });
+      console.log('is this.checkStraight(cardsInGame)', this.checkStraight(cardsInGame));
+      if (this.checkFullHouse(cardsInGame) || this.checkThreeOfAKind(cardsInGame) || this.checkFourOfAKind(cardsInGame) || this.checkFlush(cardsInGame)) {
+        bet = this.MAX_BET + this.getMinimumRaise(gameState);
+        console.log('===== inside check train: bet =====', bet);
+      }
+
+      if (highestBet > 200) {
+        bet = 0;
+      }
     }
 
-    console.log('is this.checkStraight(cardsInGame)', this.checkStraight(cardsInGame));
-
-    if (this.checkFullHouse(cardsInGame) || this.checkThreeOfAKind(cardsInGame) || this.checkFourOfAKind(cardsInGame) || this.checkFlush(cardsInGame)) {
-      bet = this.MAX_BET + this.getMinimumRaise(gameState);
-      console.log('===== inside check train: bet =====', bet);
-    }
 
     console.log('====== betCallback(bet) bet: ======', bet);
     betCallback(Math.round(bet));
