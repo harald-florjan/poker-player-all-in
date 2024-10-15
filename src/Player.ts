@@ -25,7 +25,10 @@ export class Player {
   public hole_cards: Card[] = [];
   public version = '';
   public id = 0;
+<<<<<<< HEAD
   public CARD_MAPPING = { '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13, 'A': 14 };
+=======
+>>>>>>> 1f786b5 (Str 6)
 
   public betRequest(gameState: GameState, betCallback: (bet: number) => void): void {
     const { community_cards, players } = gameState;
@@ -71,9 +74,13 @@ export class Player {
     return community_cards.some(communityCard => communityCard.rank === handCard.rank);
   }
 
-  // private checkHighestCard(gameState: GameState, hand: Card[]): number {
+  private checkDoubles(cardsInGame: Card[]): boolean {
+    return true;
+  }
 
-  // }
+  private checkHighestCard(gameState: GameState, hand: Card[]): number {
+    return 0;
+  }
 };
 
 export default Player;
