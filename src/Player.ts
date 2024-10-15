@@ -54,7 +54,7 @@ export class Player {
       });
     }
 
-    if (this.checkFullHouse(cardsInGame) || this.checkDoubles(cardsInGame)) {
+    if (this.checkFullHouse(cardsInGame) || this.checkFourOfAKind(cardsInGame)) {
       bet = highestBet * 2;
     }
 
