@@ -148,7 +148,7 @@ export class Player {
         });
       }
     });
-    return true;
+    return result;
   }
 };
 
