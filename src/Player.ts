@@ -107,7 +107,7 @@ export class Player {
     let result = false;
     cardsInGame.forEach(card => {
       const flush = cardsInGame.filter(c => c.suit === card.suit);
-      result = flush.length >= 5;
+      result = flush.length > 4;
     });
     return result;
   }
