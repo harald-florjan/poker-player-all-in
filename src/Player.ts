@@ -51,22 +51,28 @@ export class Player {
       }
 
       if (['J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) || ['J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
+        console.log('===== high cards OR =====', highestBet);
         bet = highestBet;
       }
 
       if (['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) && ['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
+        console.log('===== high cards AND =====', highestBet);
         bet = Math.round(highestBet * 1.5);
       }
     } else {
       hand.hole_cards.forEach((card: Card) => {
         if (this.cardExistsInCommunity(card, community_cards)) {
+          console.log('===== cardExistsInCommunity: bet: =====', highestBet);
           bet = highestBet;
         }
       });
     }
 
-    if (this.checkStraight(cardsInGame) || this.checkFullHouse(cardsInGame) || this.checkFourOfAKind(cardsInGame) || this.checkFlush(cardsInGame)) {
+    console.log('is this.checkStraight(cardsInGame)', this.checkStraight(cardsInGame));
+
+    if (this.checkFullHouse(cardsInGame) || this.checkFourOfAKind(cardsInGame) || this.checkFlush(cardsInGame)) {
       bet = this.MAX_BET + this.getMinimumRaise(gameState);
+      console.log('===== inside check train: bet =====', bet);
     }
 
     betCallback(bet > 1000 ? 1000 : bet);
@@ -86,6 +92,7 @@ export class Player {
       if (player.bet > highestBet) {
         return player.bet;
       }
+      console.log('===== getHighestBet =====', highestBet);
       return highestBet;
     } , 0);
   }
@@ -120,6 +127,7 @@ export class Player {
         result = true;
       }
     });
+    console.log('===== checkFourOfAKind =====', result);
     return result;
   }
 
@@ -143,6 +151,7 @@ export class Player {
         });
       }
     });
+    console.log('===== checkFullHouse =====', result);
     return result;
   }
 
@@ -166,6 +175,7 @@ export class Player {
       }
       lastCard = card;
     });
+    console.log('===== checkStraight =====', result);
     return result;
   }
 };
