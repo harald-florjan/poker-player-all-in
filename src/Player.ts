@@ -43,15 +43,15 @@ export class Player {
 
     if (gameState.round === 0 || gameState.round === 1) {
       if (hand.hole_cards[0].rank === hand.hole_cards[1].rank) {
-        bet = Math.round(highestBet * 1.5);
+        bet = highestBet * 1.5;
       }
 
       if (hand.hole_cards[0].suit === hand.hole_cards[1].suit) {
-        bet = Math.round(highestBet * 1.2);
+        bet = highestBet * 1.2;
       }
 
       if (this.hasPairInHoleCardsCommunityCards(gameState)) {
-        bet = Math.round(highestBet * 1.5);
+        bet = highestBet * 1.5;
       }
 
       if (['J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) || ['J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
@@ -65,11 +65,11 @@ export class Player {
 
       if (['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) && ['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
         console.log('===== high cards AND =====', highestBet);
-        bet = Math.round(highestBet * 1.5);
+        bet = highestBet * 1.5;
       }
 
       if (this.checkThreeOfAKind(cardsInGame)) {
-        bet = Math.round(200 + this.getMinimumRaise(gameState));
+        bet = 200 + this.getMinimumRaise(gameState);
       }
 
     } else {
@@ -88,7 +88,8 @@ export class Player {
       console.log('===== inside check train: bet =====', bet);
     }
 
-    betCallback(bet);
+    console.log('====== betCallback(bet) bet: ======', bet);
+    betCallback(Math.round(bet));
   }
 
   public showdown(gameState: any): void {
