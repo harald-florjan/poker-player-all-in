@@ -68,9 +68,8 @@ export class Player {
       if (this.checkFourOfAKind(cardsInGame)) {
         bet = Math.round(highestBet * 2);
       }
-
-      betCallback(bet > 1000 ? 1000 : bet);
     }
+    betCallback(bet > 1000 ? 1000 : bet);
   }
 
   public showdown(gameState: any): void {
@@ -104,6 +103,11 @@ export class Player {
   }
 
   private checkFlush(cardsInGame: Card[]): boolean {
+    let result = false;
+    let flushSet = [];
+  }
+
+  private checkStraight(cardsInGame: Card[]): boolean {
     let result = false;
     let flushSet = [];
   }
