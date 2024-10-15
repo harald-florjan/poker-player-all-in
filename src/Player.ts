@@ -69,7 +69,7 @@ export class Player {
       }
 
       if (this.checkThreeOfAKind(cardsInGame)) {
-        bet = this.MAX_BET + this.getMinimumRaise(gameState);
+        bet = Math.round(200 + this.getMinimumRaise(gameState));
       }
 
     } else {
