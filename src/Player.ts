@@ -102,14 +102,14 @@ export class Player {
     return 0;
   }
 
-  private checkFlush(cardsInGame: Card[]): boolean {
+  private checkFlush(cardsInGame: Card[]): any {
     let result = false;
     let flushSet = [];
   }
 
-  private checkStraight(cardsInGame: Card[]): boolean {
+  private checkStraight(cardsInGame: Card[]): any {
     let result = false;
-    let flushSet = [];
+    let straightSet = [];
   }
 
   private checkFourOfAKind(cardsInGame: Card[]): boolean {
