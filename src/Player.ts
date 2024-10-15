@@ -57,7 +57,7 @@ export class Player {
     } else {
       hand.hole_cards.forEach((card: Card) => {
         if (this.cardExistsInCommunity(card, community_cards)) {
-          bet = Math.round(highestBet * 1.5);
+          bet = highestBet;
         }
       });
     }
@@ -107,7 +107,7 @@ export class Player {
     let result = false;
     cardsInGame.forEach(card => {
       const flush = cardsInGame.filter(c => c.suit === card.suit);
-      result = flush.length > 4;
+      result = flush.length >= 5;
     });
     return result;
   }
