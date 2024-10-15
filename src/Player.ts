@@ -101,7 +101,7 @@ export class Player {
     } , 0);
   }
 
-  private cardExistsInCommunity(handCard: Card, community_cards: Card[]): boolean {
+  public cardExistsInCommunity(handCard: Card, community_cards: Card[]): boolean {
     return community_cards.some(communityCard => communityCard.rank === handCard.rank);
   }
 

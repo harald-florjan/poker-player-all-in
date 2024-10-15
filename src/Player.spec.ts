@@ -126,4 +126,38 @@ describe('Player', () => {
             expect(result).toBeFalsy();
         });
     });
+
+    describe('cardExistsInCommunity', () => {
+        let community_cards: Card[] = [{
+            rank: '5',
+            suit: 'clubs'
+        }, {
+            rank: '7',
+            suit: 'spades'
+        }, {
+            rank: 'K',
+            suit: 'diamonds'
+        },{
+            rank: 'K',
+            suit: 'hearts'
+        }];
+
+        it('should return true', () => {
+            const handCard = {
+                rank: '5',
+                suit: 'hearts'
+            };
+            const result = player.cardExistsInCommunity(handCard, community_cards);
+            expect(result).toBeTruthy();
+        });
+
+        it('should return false', () => {
+            const handCard = {
+                rank: '4',
+                suit: 'clubs'
+            };
+            const result = player.cardExistsInCommunity(handCard, community_cards);
+            expect(result).toBeFalsy();
+        });
+    });
 });
