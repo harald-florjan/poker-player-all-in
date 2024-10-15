@@ -158,6 +158,7 @@ export class Player {
       if (this.CARD_MAPPING[card.rank] - this.CARD_MAPPING[lastCard.rank] !== 1) {
         result = false;
       }
+      lastCard = card;
     });
     return result;
   }
