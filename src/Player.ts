@@ -50,7 +50,7 @@ export class Player {
       });
     }
 
-    if (this.checkDoubles(cardsInGame)) {
+    if (this.checkFourOfAKind(cardsInGame)) {
       bet = highestBet * 2;
     }
 
