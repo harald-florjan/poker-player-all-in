@@ -50,14 +50,22 @@ export class Player {
       } else if (['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) && ['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
         console.log('===== high cards AND =====', highestBet);
         bet = highestBet * 1.5;
+      } else {
+        if (highestBet > 200) {
+          bet = 0;
+        } else {
+          bet = highestBet;
+        }
       }
     } else {
+      // if (gameState.round === 1) {
         if (this.hasPairInHoleCardsCommunityCards(gameState)) {
           bet = highestBet * 1.5;
         }
+      // }
 
       if (this.checkThreeOfAKind(cardsInGame)) {
-        bet = 200 + this.getMinimumRaise(gameState);
+        bet = 500 + this.getMinimumRaise(gameState);
       }
 
       console.log('is this.checkStraight(cardsInGame)', this.checkStraight(cardsInGame));
