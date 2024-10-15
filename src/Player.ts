@@ -163,7 +163,7 @@ export class Player {
     return gameState.current_buy_in - gameState.players[gameState.in_action].bet + gameState.minimum_raise;
   }
 
-  private checkStraight(cardsInGame: Card[]): boolean {
+  public checkStraight(cardsInGame: Card[]): boolean {
     let result = true;
 
     const sortedCards = cardsInGame.sort((a, b) => this.CARD_MAPPING[a.rank] - this.CARD_MAPPING[b.rank]);

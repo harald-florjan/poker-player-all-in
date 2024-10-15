@@ -6,16 +6,22 @@
     "scripts": {
         "postinstall": "npm run build",
         "start": "node out/index.js",
-        "build": "tsc -p ."
+        "build": "tsc -p .",
+        "test": "jest"
     },
     "dependencies": {
-        "express": "*"
+        "@babel/preset-env": "7.25.8",
+        "babel-jest": "29.7.0",
+        "express": "*",
+        "jest": "29.7.0",
+        "ts-jest": "29.2.5"
     },
     "engines": {
         "node": ">=20.10.0"
     },
     "devDependencies": {
         "@types/express": "*",
+        "@types/jest": "29.5.13",
         "typescript": "*"
     }
 }
