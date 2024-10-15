@@ -10,6 +10,8 @@ export interface GameState {
   community_cards: Card[];
   current_buy_in: number;
   pot: number;
+  minimum_raise: number;
+  in_action: number;
 }
 
 export interface Card {
@@ -64,7 +66,7 @@ export class Player {
     }
 
     if (this.checkStraight(cardsInGame) || this.checkFullHouse(cardsInGame) || this.checkFourOfAKind(cardsInGame) || this.checkFlush(cardsInGame)) {
-      bet = this.MAX_BET;
+      bet = this.MAX_BET + this.getMinimumRaise(gameState);
     }
 
     betCallback(bet > 1000 ? 1000 : bet);
@@ -142,6 +144,10 @@ export class Player {
       }
     });
     return result;
+  }
+
+  private getMinimumRaise(gameState: GameState): number {
+    return gameState.current_buy_in - gameState.players[gameState.in_action].bet + gameState.minimum_raise;
   }
 
   private checkStraight(cardsInGame: Card[]): boolean {
