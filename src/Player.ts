@@ -41,6 +41,7 @@ export class Player {
         bet = highestBet * 1.1;
       }
     });
+    
 
     betCallback(bet);
   }
