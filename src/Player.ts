@@ -52,12 +52,9 @@ export class Player {
         bet = highestBet * 1.5;
       }
     } else {
-      if (gameState.round === 1) {
-
         if (this.hasPairInHoleCardsCommunityCards(gameState)) {
           bet = highestBet * 1.5;
         }
-      }
 
       if (this.checkThreeOfAKind(cardsInGame)) {
         bet = 200 + this.getMinimumRaise(gameState);
