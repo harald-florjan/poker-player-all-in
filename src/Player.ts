@@ -41,7 +41,7 @@ export class Player {
 
     const cardsInGame = hand.hole_cards.concat(community_cards);
 
-    if (gameState.round === 0) {
+    if (gameState.round === 0 || gameState.round === 1) {
       if (hand.hole_cards[0].rank === hand.hole_cards[1].rank) {
         bet = Math.round(highestBet * 1.5);
       }
