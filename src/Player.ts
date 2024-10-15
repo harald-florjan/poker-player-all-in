@@ -25,12 +25,37 @@ export class Player {
   public version = '';
   public id = 0;
 
-  public betRequest(gameState: any, betCallback: (bet: number) => void): void {
-    betCallback(2);
+  public betRequest(gameState: GameState, betCallback: (bet: number) => void): void {
+    const { community_cards, players } = gameState;
+    let bet = 0;
+    const hand = this.findMyPlayer(gameState);
+    const highestBet = this.getHighestBet(gameState);
+
+    if (hand.hole_cards[0].rank === hand.hole_cards[1].rank) {
+      bet = highestBet * 1,1;
+    } else {
+      bet = 0;
+    }
+
+    betCallback(bet);
   }
 
   public showdown(gameState: any): void {
 
+  }
+
+  private findMyPlayer(gameState: GameState): any {
+    
+    return gameState.players.find(player => player.name === 'All in');
+  }
+
+  private getHighestBet(gameState: GameState): number {
+    return gameState.players.reduce((highestBet, player) => {
+      if (player.bet > highestBet) {
+        return player.bet;
+      }
+      return highestBet;
+    } , 0);
   }
 };
 
