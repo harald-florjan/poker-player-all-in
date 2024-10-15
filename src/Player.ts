@@ -49,6 +49,11 @@ export class Player {
         }
       });
     }
+
+    if (this.checkDoubles(cardsInGame)) {
+      bet = highestBet * 2;
+    }
+
     betCallback(bet);
   }
 
@@ -80,6 +85,17 @@ export class Player {
 
   private checkHighestCard(gameState: GameState, hand: Card[]): number {
     return 0;
+  }
+
+  private checkFourOfAKind(cardsInGame: Card[]): boolean {
+    let result = false;
+    cardsInGame.forEach(card => {
+      const count = cardsInGame.filter(c => c.rank === card.rank).length;
+      if (count === 4) {
+        result = true;
+      }
+    });
+    return result;
   }
 };
 
