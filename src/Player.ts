@@ -35,21 +35,17 @@ export class Player {
 
     const cardsInGame = hand.hole_cards.concat(community_cards);
 
-    if (hand.hole_cards[0].rank === hand.hole_cards[1].rank) {
-      bet = highestBet * 1.5;
-    }
-
-    if (hand.hole_cards[0].suit === hand.hole_cards[1].suit) {
-      bet = highestBet * 1.2;
-    }
-
-    hand.hole_cards.forEach((card: Card) => {
-      if (this.cardExistsInCommunity(card, community_cards)) {
+    if (gameState.round === 0) {
+      if (hand.hole_cards[0].rank === hand.hole_cards[1].rank || hand.hole_cards[0].suit === hand.hole_cards[1].suit) {
         bet = highestBet * 1.5;
       }
-    });
-
-
+    } else {
+      hand.hole_cards.forEach((card: Card) => {
+        if (this.cardExistsInCommunity(card, community_cards)) {
+          bet = highestBet * 1.5;
+        }
+      });
+    }
     betCallback(bet);
   }
 
