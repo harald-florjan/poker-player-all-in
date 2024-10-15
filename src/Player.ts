@@ -62,7 +62,12 @@ export class Player {
         if (this.hasPairInHoleCardsCommunityCards(gameState)) {
           bet = highestBet * 1.5;
         }
-      // }
+
+        if (!this.checkThreeOfAKind(cardsInGame) && !this.checkFullHouse(cardsInGame) && !this.checkThreeOfAKind(cardsInGame) && !this.checkFourOfAKind(cardsInGame) && !this.checkFlush(cardsInGame)) {
+          bet = 0
+        }
+
+      // TODO: consider other round behaviour. Insert other folding strat?
 
       if (this.checkThreeOfAKind(cardsInGame)) {
         bet = 500 + this.getMinimumRaise(gameState);
