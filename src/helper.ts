@@ -159,8 +159,36 @@ export function isMediumDealtHand(hand: Card[]): boolean {
     return sortedHand[0].rank === 'J' && sortedHand[1].rank === 'Q';
 }
 
-export function isMediumHand(hand: Card[]) {
-    const sortedHand = sortHandByRank(hand);
+export function isMediumHand(hand: Card[]): boolean {
+    const rankCount: { [key in Rank]?: number } = {};
+
+    // Count the occurrences of each rank in the hand
+    hand.forEach(card => {
+        if (rankCount[card.rank]) {
+            rankCount[card.rank]! += 1;
+        } else {
+            rankCount[card.rank] = 1;
+        }
+    });
+
+    // Check for pairs of ranks 6-9
+    const pairs = Object.entries(rankCount).filter(([rank, count]) => {
+        return count === 2 && ['6', '7', '8', '9'].includes(rank);
+    });
+
+    if (pairs.length > 0) {
+        return true; // Found a pair of 6-9
+    }
+
+    // Check for specific combinations KQ, KJ, or QJ
+    const ranks = new Set(hand.map(card => card.rank));
+
+    // Check for combinations
+    const hasKQ = ranks.has(Rank.KING) && ranks.has(Rank.QUEEN);
+    const hasKJ = ranks.has(Rank.KING) && ranks.has(Rank.JACK);
+    const hasQJ = ranks.has(Rank.QUEEN) && ranks.has(Rank.JACK);
+
+    return hasKQ || hasKJ || hasQJ;
 }
 
 export function isWeakDealtHand(hand: Card[]): boolean {

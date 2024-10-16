@@ -1,6 +1,6 @@
 import * as helper from './helper';
 import { GameState, Card } from './types';
-import {CARD_MAPPING, isAllInCombination} from './helper';
+import {CARD_MAPPING, isAllInCombination, isMediumHand, isThreeOfAKind} from './helper';
 
 export class Player {
   public name = '';
@@ -45,12 +45,40 @@ export class Player {
       }
     } else if(helper.isFlop(gameState)) {
         if(isAllInCombination(cardsInGame)) {
-            bet = player.stack;
+          bet = player.stack;
+        } else if (isThreeOfAKind(cardsInGame)) {
+          if (player.stack * 0.7 < gameState.current_buy_in) {
+            bet = player.stack * 0.7;
+          } else {
+            gameState.current_buy_in;
+          }
+        } else if (isMediumHand(cardsInGame)) {
+          bet = gameState.current_buy_in;
         }
     } else if(helper.isTurn(gameState)) {
-
+      if(isAllInCombination(cardsInGame)) {
+        bet = player.stack;
+      } else if (isThreeOfAKind(cardsInGame)) {
+        if (player.stack * 0.7 < gameState.current_buy_in) {
+          bet = player.stack * 0.7;
+        } else {
+          gameState.current_buy_in;
+        }
+      } else if (isMediumHand(cardsInGame)) {
+        bet = gameState.current_buy_in;
+      }
     } else if(helper.isRiver(gameState)) {
-
+      if(isAllInCombination(cardsInGame)) {
+        bet = player.stack;
+      } else if (isThreeOfAKind(cardsInGame)) {
+        if (player.stack * 0.7 < gameState.current_buy_in) {
+          bet = player.stack * 0.7;
+        } else {
+          gameState.current_buy_in;
+        }
+      } else if (isMediumHand(cardsInGame)) {
+        bet = gameState.current_buy_in;
+      }
     }
 
     console.log(`==== ROUND ${gameState.round} BET: ${bet}`);
