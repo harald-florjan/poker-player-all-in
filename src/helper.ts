@@ -159,10 +159,8 @@ export function isMediumDealtHand(hand: Card[]): boolean {
     return sortedHand[0].rank === 'J' && sortedHand[1].rank === 'Q';
 }
 
-export function isMediumHand(hand: Card[]): boolean {
+export function isMediumHand(hand: Card[]) {
     const sortedHand = sortHandByRank(hand);
-
-
 }
 
 export function isWeakDealtHand(hand: Card[]): boolean {
