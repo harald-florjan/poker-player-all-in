@@ -21,6 +21,9 @@ export class Player {
     console.log('=== MY HAND ===', hand);
     console.log('=== CARDS IN GAME ===', cardsInGame);
 
+    betCallback(0);
+    return;
+
     if (helper.isPreFlop(gameState)) {
       if(helper.isStrongDealtHand(player.hole_cards)) {
         bet = 1000;
