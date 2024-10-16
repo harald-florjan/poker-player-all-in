@@ -21,13 +21,13 @@ export class Player {
     console.log('=== MY HAND ===', hand);
     console.log('=== CARDS IN GAME ===', cardsInGame);
 
-    let outPlayers = gameState.players.filter(player => player.status === 'out');
-    console.log('outPlayers', outPlayers);
-
-    if (outPlayers.length < 6) {
-      betCallback(0);
-      return;
-    }
+    // let outPlayers = gameState.players.filter(player => player.status === 'out');
+    // console.log('outPlayers', outPlayers);
+    //
+    // if (outPlayers.length < 6) {
+    //   betCallback(0);
+    //   return;
+    // }
 
     if (helper.isPreFlop(gameState)) {
       if(helper.isStrongDealtHand(player.hole_cards)) {
