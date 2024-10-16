@@ -49,9 +49,9 @@ export class Player {
         } else if (isThreeOfAKind(cardsInGame)) {
           bet = gameState.current_buy_in * 2;
         } else if (isMediumHand(cardsInGame)) {
-          bet = gameState.current_buy_in;
+          bet = gameState.current_buy_in + 1;
         } else if (isStrongHand(cardsInGame)){
-          bet = gameState.current_buy_in;
+          bet = gameState.current_buy_in + 1;
         } else {
           bet = 0;
         }
@@ -61,9 +61,9 @@ export class Player {
       } else if (isThreeOfAKind(cardsInGame)) {
         bet = gameState.current_buy_in * 2;
       } else if (isMediumHand(cardsInGame)) {
-        bet = gameState.current_buy_in;
+        bet = gameState.current_buy_in + 1;
       } else if (isStrongHand(cardsInGame)){
-        bet = gameState.current_buy_in;
+        bet = gameState.current_buy_in + 1;
       } else {
         bet = 0;
       }
@@ -73,9 +73,9 @@ export class Player {
       } else if (isThreeOfAKind(cardsInGame)) {
         bet = gameState.current_buy_in * 2;
       } else if (isMediumHand(cardsInGame)) {
-        bet = gameState.current_buy_in;
-      } else {
-        bet = gameState.current_buy_in;
+        bet = gameState.current_buy_in + 1;
+      } else if (isStrongHand(cardsInGame)){
+        bet = gameState.current_buy_in + 1;
       }
     }
 
