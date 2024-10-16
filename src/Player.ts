@@ -40,7 +40,7 @@ export class Player {
         } else if (gameState.current_buy_in === 0) {
           bet = 10;
         } else {
-          bet = 0;
+          bet = 100;
         }
       }
     } else if(helper.isFlop(gameState)) {
