@@ -28,9 +28,9 @@ export class Player {
 
       if(helper.isMediumDealtHand(player.hole_cards)) {
         if(gameState.current_buy_in < 200) {
-          bet = 200;
+          bet = gameState.current_buy_in * 1.1
         } else {
-          bet = gameState.current_buy_in * 1.2
+          bet = gameState.current_buy_in + 1;
         }
       }
 
@@ -40,14 +40,14 @@ export class Player {
         } else if (gameState.current_buy_in === 0) {
           bet = 10;
         } else {
-          bet = 100;
+          bet = 0;
         }
       }
     } else if(helper.isFlop(gameState)) {
         if(isAllInCombination(cardsInGame)) {
           bet = player.stack;
         } else if (isThreeOfAKind(cardsInGame)) {
-          bet = gameState.current_buy_in * 2;
+          bet = gameState.current_buy_in * 1.5;
         } else if (isMediumHand(cardsInGame)) {
           bet = gameState.current_buy_in;
         } else if (isStrongHand(cardsInGame)){
