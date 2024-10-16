@@ -72,20 +72,11 @@ export class Player {
         bet = highestBet;
       } else if (['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) && ['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
         console.log('===== high cards AND =====', highestBet);
-<<<<<<< HEAD
         bet = highestBet * 1.5;
       } else {
         if (highestBet > 200) {
           bet = 0;
         } else {
-=======
-        bet = Math.round(highestBet * 1.5);
-      }
-    } else {
-      hand.hole_cards.forEach((card: Card) => {
-        if (this.cardExistsInCommunity(card, community_cards) || this.checkTwoPairs(cardsInGame)) {
-          console.log('===== cardExistsInCommunity: bet: =====', highestBet);
->>>>>>> d846ac1 (Str 14)
           bet = highestBet;
         }
       }
