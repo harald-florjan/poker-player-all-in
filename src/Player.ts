@@ -1,6 +1,6 @@
 import * as helper from './helper';
 import { GameState, Card } from './types';
-import {CARD_MAPPING, isAllInCombination, isMediumHand, isThreeOfAKind} from './helper';
+import {CARD_MAPPING, isAllInCombination, isMediumHand, isStrongHand, isThreeOfAKind} from './helper';
 
 export class Player {
   public name = '';
@@ -50,6 +50,8 @@ export class Player {
           bet = gameState.current_buy_in * 2;
         } else if (isMediumHand(cardsInGame)) {
           bet = gameState.current_buy_in;
+        } else if (isStrongHand(cardsInGame)){
+          bet = gameState.current_buy_in;
         } else {
           bet = 0;
         }
@@ -59,6 +61,8 @@ export class Player {
       } else if (isThreeOfAKind(cardsInGame)) {
         bet = gameState.current_buy_in * 2;
       } else if (isMediumHand(cardsInGame)) {
+        bet = gameState.current_buy_in;
+      } else if (isStrongHand(cardsInGame)){
         bet = gameState.current_buy_in;
       } else {
         bet = 0;
@@ -71,7 +75,7 @@ export class Player {
       } else if (isMediumHand(cardsInGame)) {
         bet = gameState.current_buy_in;
       } else {
-        bet = 0;
+        bet = gameState.current_buy_in;
       }
     }
 

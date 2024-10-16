@@ -230,3 +230,33 @@ export function isRiver(gameState: GameState): boolean {
 export function isAllInCombination(hand: Card[]): boolean {
     return isFullHouse(hand) || isStraight(hand) || isFlush(hand) || isFourOfAKind(hand) || isRoyalFlush(hand);
 }
+
+export function isStrongHand(combinedHand: Card[]): boolean {
+    const rankCount: { [key in Rank]?: number } = {};
+
+    // Count the occurrences of each rank in the combined hand
+    combinedHand.forEach(card => {
+        if (rankCount[card.rank]) {
+            rankCount[card.rank]! += 1;
+        } else {
+            rankCount[card.rank] = 1;
+        }
+    });
+
+    // Check for pairs of ranks 10 or higher
+    const strongPairs = Object.entries(rankCount).filter(([rank, count]) => {
+        return count === 2 && ['10', 'J', 'Q', 'K', 'A'].includes(rank);
+    });
+
+    if (strongPairs.length > 0) {
+        return true; // Found a pair of 10s or higher
+    }
+
+    // Check for specific combinations AK or AQ
+    const ranks = new Set(combinedHand.map(card => card.rank));
+
+    const hasAK = ranks.has(Rank.ACE) && ranks.has(Rank.KING);
+    const hasAQ = ranks.has(Rank.ACE) && ranks.has(Rank.QUEEN);
+
+    return hasAK || hasAQ;
+}
