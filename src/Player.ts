@@ -47,37 +47,31 @@ export class Player {
         if(isAllInCombination(cardsInGame)) {
           bet = player.stack;
         } else if (isThreeOfAKind(cardsInGame)) {
-          if (player.stack * 0.7 < gameState.current_buy_in) {
-            bet = player.stack * 0.7;
-          } else {
-            gameState.current_buy_in;
-          }
+          bet = gameState.current_buy_in * 2;
         } else if (isMediumHand(cardsInGame)) {
           bet = gameState.current_buy_in;
+        } else {
+          bet = 0;
         }
     } else if(helper.isTurn(gameState)) {
       if(isAllInCombination(cardsInGame)) {
         bet = player.stack;
       } else if (isThreeOfAKind(cardsInGame)) {
-        if (player.stack * 0.7 < gameState.current_buy_in) {
-          bet = player.stack * 0.7;
-        } else {
-          gameState.current_buy_in;
-        }
+        bet = gameState.current_buy_in * 2;
       } else if (isMediumHand(cardsInGame)) {
         bet = gameState.current_buy_in;
+      } else {
+        bet = 0;
       }
     } else if(helper.isRiver(gameState)) {
       if(isAllInCombination(cardsInGame)) {
         bet = player.stack;
       } else if (isThreeOfAKind(cardsInGame)) {
-        if (player.stack * 0.7 < gameState.current_buy_in) {
-          bet = player.stack * 0.7;
-        } else {
-          gameState.current_buy_in;
-        }
+        bet = gameState.current_buy_in * 2;
       } else if (isMediumHand(cardsInGame)) {
         bet = gameState.current_buy_in;
+      } else {
+        bet = 0;
       }
     }
 

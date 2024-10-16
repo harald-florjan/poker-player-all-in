@@ -186,9 +186,21 @@ export function isMediumHand(hand: Card[]): boolean {
     // Check for combinations
     const hasKQ = ranks.has(Rank.KING) && ranks.has(Rank.QUEEN);
     const hasKJ = ranks.has(Rank.KING) && ranks.has(Rank.JACK);
+    const hasKA = ranks.has(Rank.KING) && ranks.has(Rank.ACE);
+
+    const hasQA = ranks.has(Rank.QUEEN) && ranks.has(Rank.ACE);
+    const hasQK = ranks.has(Rank.QUEEN) && ranks.has(Rank.KING);
     const hasQJ = ranks.has(Rank.QUEEN) && ranks.has(Rank.JACK);
 
-    return hasKQ || hasKJ || hasQJ;
+    const hasJA = ranks.has(Rank.JACK) && ranks.has(Rank.ACE);
+    const hasJK = ranks.has(Rank.JACK) && ranks.has(Rank.KING);
+    const hasJQ = ranks.has(Rank.JACK) && ranks.has(Rank.QUEEN);
+
+    const hasAK = ranks.has(Rank.ACE) && ranks.has(Rank.KING);
+    const hasAQ = ranks.has(Rank.ACE) && ranks.has(Rank.QUEEN);
+    const hasAJ = ranks.has(Rank.ACE) && ranks.has(Rank.JACK);
+
+    return hasKQ || hasKJ || hasQJ || hasQA || hasQK || hasKA || hasJA || hasJK || hasJQ || hasAK || hasAQ || hasAJ;
 }
 
 export function isWeakDealtHand(hand: Card[]): boolean {
