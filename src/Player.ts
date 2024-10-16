@@ -49,11 +49,20 @@ export class Player {
         bet = highestBet;
       } else if (['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) && ['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
         console.log('===== high cards AND =====', highestBet);
+<<<<<<< HEAD
         bet = highestBet * 1.5;
       } else {
         if (highestBet > 200) {
           bet = 0;
         } else {
+=======
+        bet = Math.round(highestBet * 1.5);
+      }
+    } else {
+      hand.hole_cards.forEach((card: Card) => {
+        if (this.cardExistsInCommunity(card, community_cards) || this.checkTwoPairs(cardsInGame)) {
+          console.log('===== cardExistsInCommunity: bet: =====', highestBet);
+>>>>>>> d846ac1 (Str 14)
           bet = highestBet;
         }
       }
@@ -63,7 +72,8 @@ export class Player {
           bet = highestBet * 1.5;
         }
 
-        if (!this.checkThreeOfAKind(cardsInGame) && !this.checkFullHouse(cardsInGame) && !this.checkThreeOfAKind(cardsInGame) && !this.checkFourOfAKind(cardsInGame) && !this.checkFlush(cardsInGame)) {
+        if (!this.checkThreeOfAKind(cardsInGame) && !this.checkFullHouse(cardsInGame) && !this.checkThreeOfAKind(cardsInGame) 
+          && !this.checkFourOfAKind(cardsInGame) && !this.checkFlush(cardsInGame) && !this.checkSrtaightFlush(cardsInGame)) {
           bet = 0
         }
 
@@ -74,7 +84,8 @@ export class Player {
       }
 
       console.log('is this.checkStraight(cardsInGame)', this.checkStraight(cardsInGame));
-      if (this.checkFullHouse(cardsInGame) || this.checkThreeOfAKind(cardsInGame) || this.checkFourOfAKind(cardsInGame) || this.checkFlush(cardsInGame)) {
+      if (this.checkFullHouse(cardsInGame) || this.checkThreeOfAKind(cardsInGame) || this.checkFourOfAKind(cardsInGame) 
+        || this.checkFlush(cardsInGame) || this.checkSrtaightFlush(cardsInGame)) {
         bet = this.MAX_BET + this.getMinimumRaise(gameState);
         console.log('===== inside check train: bet =====', bet);
       }
@@ -183,9 +194,12 @@ export class Player {
     return gameState.current_buy_in - gameState.players[gameState.in_action].bet + gameState.minimum_raise;
   }
 
-  public checkStraight(cardsInGame: Card[]): boolean {
+  public checkStraight(cardsInGame: Card[]): boolean {    
+    if (this.aceLowStraight(cardsInGame)) {
+      return true;
+    }
+    
     let result = true;
-
     const sortedCards = cardsInGame.sort((a, b) => this.CARD_MAPPING[a.rank] - this.CARD_MAPPING[b.rank]);
 
     let lastCard: Card | null = null;
@@ -200,6 +214,35 @@ export class Player {
       lastCard = card;
     });
     console.log('===== checkStraight =====', result);
+    return result;
+  }
+
+  public aceLowStraight(cardsInGame: Card[]): boolean {
+    return cardsInGame.filter(card => card.rank === '2' || card.rank === '3'
+      || card.rank === '4' || card.rank === '5' || card.rank === 'A').length === 5;
+  }
+
+  public checkSrtaightFlush(cardsInGame: Card[]): boolean {
+    return this.checkStraight(cardsInGame) && this.checkFlush(cardsInGame);
+  }
+
+  public checkTwoPairs(cardsInGame: Card[]): boolean {
+    let result = false;
+    cardsInGame.forEach(card => {
+      const pair = cardsInGame.filter(c => c.rank === card.rank);
+      if (pair.length === 2) {
+        cardsInGame.forEach(card2 => {
+          if (card2.rank === card.rank) {
+            return;
+          }
+
+          const pair2 = cardsInGame.filter(c => c.rank === card2.rank);
+          if (pair2.length === 2) {
+            result = true;
+          }
+        });
+      }
+    });
     return result;
   }
 };
