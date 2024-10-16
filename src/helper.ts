@@ -28,6 +28,22 @@ export function isFullHouse(hand: Card[]): boolean {
     return hasThreeOfAKind && hasPair;
 }
 
+export function isRoyalFlush(hand: Card[]): boolean {
+    // First, check if all cards are of the same suit (Flush)
+    const firstSuit = hand[0].suit;
+    const isFlush = hand.every(card => card.suit === firstSuit);
+
+    // Define the ranks for a Royal Flush
+    const royalRanks = new Set([Rank.TEN, Rank.JACK, Rank.QUEEN, Rank.KING, Rank.ACE]);
+
+    // Check if the hand contains exactly the ranks of a Royal Flush
+    const handRanks = new Set(hand.map(card => card.rank));
+    const isRoyal = royalRanks.size === handRanks.size && [...royalRanks].every(rank => handRanks.has(rank));
+
+    // Return true if it's both a flush and contains all the royal ranks
+    return isFlush && isRoyal;
+}
+
 export function isStraight(hand: Card[]): boolean {
     // Extract and sort the rank values
     const sortedRanks = [...new Set(hand.map(card => CARD_MAPPING[card.rank]))].sort((a, b) => a - b);
@@ -138,10 +154,15 @@ export function isMediumDealtHand(hand: Card[]): boolean {
 
     if(['J', 'Q'].includes(sortedHand[0].rank) && sortedHand[1].rank === 'K') {
         return true;
-
     }
 
     return sortedHand[0].rank === 'J' && sortedHand[1].rank === 'Q';
+}
+
+export function isMediumHand(hand: Card[]): boolean {
+    const sortedHand = sortHandByRank(hand);
+
+
 }
 
 export function isWeakDealtHand(hand: Card[]): boolean {
@@ -166,4 +187,8 @@ export function isTurn(gameState: GameState): boolean {
 
 export function isRiver(gameState: GameState): boolean {
     return gameState.community_cards.length === 5;
+}
+
+export function isAllInCombination(hand: Card[]): boolean {
+    return isFullHouse(hand) || isStraight(hand) || isFlush(hand) || isFourOfAKind(hand) || isRoyalFlush(hand);
 }

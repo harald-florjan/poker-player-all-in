@@ -1,6 +1,6 @@
 import * as helper from './helper';
 import { GameState, Card } from './types';
-import { CARD_MAPPING } from './helper';
+import {CARD_MAPPING, isAllInCombination} from './helper';
 
 export class Player {
   public name = '';
@@ -17,7 +17,9 @@ export class Player {
     let bet = 0;
     const hand = this.findMyPlayer(gameState);
     const player = this.findMyPlayer(gameState);
+    const cardsInGame = player.hole_cards.concat(community_cards);
     console.log('=== MY HAND ===', hand);
+    console.log('=== CARDS IN GAME ===', cardsInGame);
 
     if (helper.isPreFlop(gameState)) {
       if(helper.isStrongDealtHand(player.hole_cards)) {
@@ -33,10 +35,18 @@ export class Player {
       }
 
       if(helper.isWeakDealtHand(player.hole_cards)) {
-        bet = 0; // check hand, server will decide if we check of fold
+        if(gameState.current_buy_in < 100) {
+          bet = gameState.current_buy_in;
+        } else if (gameState.current_buy_in === 0) {
+          bet = 10;
+        } else {
+          bet = 0;
+        }
       }
     } else if(helper.isFlop(gameState)) {
-
+        if(isAllInCombination(cardsInGame)) {
+            bet = player.stack;
+        }
     } else if(helper.isTurn(gameState)) {
 
     } else if(helper.isRiver(gameState)) {
@@ -62,7 +72,7 @@ export class Player {
   }
 
   private findMyPlayer(gameState: GameState): any {
-    return gameState.players.find(player => player.name === 'All in');
+    return gameState.players[gameState.in_action];
   }
 
   public getHighestBet(gameState: GameState): number {
