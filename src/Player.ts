@@ -23,7 +23,7 @@ export class Player {
 
     let activePlayers = gameState.players.filter(player => player.status === 'active');
 
-    if (activePlayers.length >= 2) {
+    if (activePlayers.length === 2) {
       betCallback(0);
       return;
     }
