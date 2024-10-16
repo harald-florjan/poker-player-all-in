@@ -47,7 +47,7 @@ export class Player {
         if(isAllInCombination(cardsInGame)) {
           bet = player.stack;
         } else if (isThreeOfAKind(cardsInGame)) {
-          bet = gameState.current_buy_in * 1.5;
+          bet = gameState.current_buy_in * 2;
         } else if (isMediumHand(cardsInGame)) {
           bet = gameState.current_buy_in;
         } else if (isStrongHand(cardsInGame)){
