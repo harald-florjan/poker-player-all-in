@@ -21,8 +21,12 @@ export class Player {
     console.log('=== MY HAND ===', hand);
     console.log('=== CARDS IN GAME ===', cardsInGame);
 
-    betCallback(0);
-    return;
+    let activePlayers = gameState.players.filter(player => player.status === 'active');
+
+    if (activePlayers.length > 3) {
+      betCallback(0);
+      return;
+    }
 
     if (helper.isPreFlop(gameState)) {
       if(helper.isStrongDealtHand(player.hole_cards)) {
