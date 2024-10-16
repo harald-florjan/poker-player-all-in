@@ -16,34 +16,60 @@ export class Player {
     const {community_cards, players} = gameState;
     let bet = 0;
     const hand = this.findMyPlayer(gameState);
-    const player = this.findMyPlayer(gameState);
-    console.log('=== MY HAND ===', hand);
-
-    if (helper.isPreFlop(gameState)) {
-      if(helper.isStrongDealtHand(player.hole_cards)) {
-        bet = 1000;
-      }
-
-      if(helper.isMediumDealtHand(player.hole_cards)) {
-        if(gameState.current_buy_in < 200) {
-          bet = 200;
-        } else {
-          bet = gameState.current_buy_in * 1.2
-        }
-      }
-
-      if(helper.isWeakDealtHand(player.hole_cards)) {
-        bet = 0; // check hand, server will decide if we check of fold
-      }
-    } else if(helper.isFlop(gameState)) {
-
-    } else if(helper.isTurn(gameState)) {
-
-    } else if(helper.isRiver(gameState)) {
-
+    let highestBet = this.getHighestBet(gameState);
+    if (highestBet == 0) {
+      highestBet = 200;
     }
 
-    console.log(`==== ROUND ${gameState.round} BET: ${bet}`);
+    const cardsInGame = hand.hole_cards.concat(community_cards);
+
+    if (gameState.round === 0) {
+      // removed suite from check  || hand.hole_cards[0].suit === hand.hole_cards[1].suit
+      if (hand.hole_cards[0].rank === hand.hole_cards[1].rank) {
+        bet = highestBet * 1.2;
+      } else if (['J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) || ['J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
+        bet = highestBet;
+      } else if (['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[0].rank) && ['10', 'J', 'Q', 'K', 'A'].includes(hand.hole_cards[1].rank)) {
+        console.log('===== high cards AND =====', highestBet);
+        bet = highestBet * 1.5;
+      } else {
+        if (highestBet > 200) {
+          bet = 0;
+        } else {
+          bet = highestBet;
+        }
+      }
+    } else {
+      // if (gameState.round === 1) {
+      if (this.hasPairInHoleCardsCommunityCards(gameState)) {
+        bet = highestBet * 1.5;
+      }
+
+      if (!this.checkThreeOfAKind(cardsInGame) && !this.checkFullHouse(cardsInGame) && !this.checkThreeOfAKind(cardsInGame)
+          && !this.checkFourOfAKind(cardsInGame) && !this.checkFlush(cardsInGame) && !this.checkSrtaightFlush(cardsInGame)) {
+        bet = 0
+      }
+
+      // TODO: consider other round behaviour. Insert other folding strat?
+
+      if (this.checkThreeOfAKind(cardsInGame)) {
+        bet = 500 + this.getMinimumRaise(gameState);
+      }
+
+      console.log('is this.checkStraight(cardsInGame)', this.checkStraight(cardsInGame));
+      if (this.checkFullHouse(cardsInGame) || this.checkThreeOfAKind(cardsInGame) || this.checkFourOfAKind(cardsInGame)
+          || this.checkFlush(cardsInGame) || this.checkSrtaightFlush(cardsInGame)) {
+        bet = this.MAX_BET + this.getMinimumRaise(gameState);
+        console.log('===== inside check train: bet =====', bet);
+      }
+    }
+
+    // if (highestBet > 200) {
+    //   bet = 0;
+    // }
+
+
+    console.log('====== betCallback(bet) bet: ======', bet);
     betCallback(Math.round(bet));
   }
 
@@ -62,6 +88,7 @@ export class Player {
   }
 
   private findMyPlayer(gameState: GameState): any {
+
     return gameState.players.find(player => player.name === 'All in');
   }
 
@@ -140,11 +167,11 @@ export class Player {
     return gameState.current_buy_in - gameState.players[gameState.in_action].bet + gameState.minimum_raise;
   }
 
-  public checkStraight(cardsInGame: Card[]): boolean {    
+  public checkStraight(cardsInGame: Card[]): boolean {
     if (this.aceLowStraight(cardsInGame)) {
       return true;
     }
-    
+
     let result = true;
     const sortedCards = cardsInGame.sort((a, b) => CARD_MAPPING[a.rank] - CARD_MAPPING[b.rank]);
 
@@ -165,7 +192,7 @@ export class Player {
 
   public aceLowStraight(cardsInGame: Card[]): boolean {
     return cardsInGame.filter(card => card.rank === '2' || card.rank === '3'
-      || card.rank === '4' || card.rank === '5' || card.rank === 'A').length === 5;
+        || card.rank === '4' || card.rank === '5' || card.rank === 'A').length === 5;
   }
 
   public checkSrtaightFlush(cardsInGame: Card[]): boolean {
