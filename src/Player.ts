@@ -24,7 +24,7 @@ export class Player {
     let outPlayers = gameState.players.filter(player => player.status === 'out');
     console.log('outPlayers', outPlayers);
 
-    if (outPlayers.length < 5) {
+    if (outPlayers.length < 6) {
       betCallback(0);
       return;
     }
